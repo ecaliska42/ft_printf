@@ -6,7 +6,7 @@
 /*   By: ecaliska <ecaliska@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 16:10:44 by ecaliska          #+#    #+#             */
-/*   Updated: 2023/09/26 17:54:31 by ecaliska         ###   ########.fr       */
+/*   Updated: 2023/09/26 19:09:35 by ecaliska         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,10 @@
 #include <stdarg.h>
 #include <stdio.h>
 
-
-void    print(char c)
+void	print(char c)
 {
 	write(1, &c, 1);
 }
-
 
 void	ft_putnbr(int nb)
 {
@@ -59,7 +57,7 @@ void	ft_unsigned_putnbr(unsigned int nb)
 void	str(char *s)
 {
 	int	i;
-	
+
 	i = 0;
 	while (s[i])
 	{
@@ -68,44 +66,48 @@ void	str(char *s)
 	}
 }
 
+// void	adress(void *ad)
+// {
+// 	print(&ad);
+// }
 
 int	ft_printf(const char *s, ...)
 {
-	int	i;
-
-	i = 0;        
+	int		i;
 	va_list	my_list;
-	va_start	(my_list, s);
+
+	i = 0;
+	va_start (my_list, s);
 	while (*s != '\0')
 	{
 		if (*s == '%')
-			{
-				if (*++s == 'c')
-					print (va_arg (my_list, int));
-				 else if (*s == 's')
-				 	str (va_arg (my_list, char*));
-				// else if (s[i] == 'p')
-				// 	va_arg (my_list, char);
-				 else if (s[i] == 'd')
-				 	ft_putnbr (va_arg (my_list, int));
-				// else if (s[i] == 'i')
-				// 	ft_putnbr (va_arg (my_list, int));
-				 else if (s[i] == 'u')
-				 	ft_unsigned_putnbr (va_arg (my_list, unsigned int));
-				// else if (s[i] == 'x')
-				// 	va_arg (my_list, char);
-				// else if (s[i] == 'X')
-				// 	va_arg (my_list, char);
-				else if (*s == '%')
-					write (1, "%", 1);
-			}
-			else
-				print(*s);
+		{
+			if (*++s == 'c')
+				print(va_arg(my_list, int));
+			else if (*s == 's')
+				str(va_arg(my_list, char*));
+			// else if (s[i] == 'p')
+			// 	va_arg (my_list, void *);
+			else if (s[i] == 'd')
+				ft_putnbr(va_arg(my_list, int));
+			else if (s[i] == 'i')
+				ft_putnbr(va_arg(my_list, int));
+			else if (s[i] == 'u')
+				ft_unsigned_putnbr(va_arg(my_list, unsigned int));
+			// else if (s[i] == 'x')
+			// 	va_arg (my_list, char);
+			// else if (s[i] == 'X')
+			// 	va_arg (my_list, char);
+			else if (*s == '%')
+				write (1, "%", 1);
+		}
+		else
+			print(*s);
 		s++;
 	}
 	va_end (my_list);
-	return i;
-}    
+	return (i);
+}
 
 
 int main(void)
@@ -115,8 +117,6 @@ int main(void)
 	printf("this is the printf %u\n", i);
 	return 0;
 }
-
-
 
 /*
 •OK		 %c Prints a single character.
