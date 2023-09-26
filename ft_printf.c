@@ -6,7 +6,7 @@
 /*   By: ecaliska <ecaliska@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 16:10:44 by ecaliska          #+#    #+#             */
-/*   Updated: 2023/09/26 17:15:32 by ecaliska         ###   ########.fr       */
+/*   Updated: 2023/09/26 17:18:13 by ecaliska         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,8 +83,8 @@ int	ft_printf(const char *s, ...)
 				// 	va_arg (my_list, char);
 				// else if (s[i] == 'X')
 				// 	va_arg (my_list, char);
-				// else if (s[i] == '%')
-				// 	va_arg (my_list, char);
+				else if (s[i] == '%')
+					write (1, "%", 1);
 			}
 			else
 				print(*s);
