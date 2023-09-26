@@ -3,69 +3,116 @@
 /*                                                        :::      ::::::::   */
 /*   ft_printf.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecaliska <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ecaliska <ecaliska@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 16:10:44 by ecaliska          #+#    #+#             */
-/*   Updated: 2023/09/25 18:58:43 by ecaliska         ###   ########.fr       */
+/*   Updated: 2023/09/26 17:15:32 by ecaliska         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <unistd.h>
 #include <stdarg.h>
+#include <stdio.h>
 
 
-void	print(char c)
+void    print(char c)
 {
 	write(1, &c, 1);
 }
 
-void	arguments(const char *s);
+
+void	ft_putnbr(int nb)
 {
-	if (*s == 'c')
+	if (nb == -2147483648)
 	{
-			write(1, *s, 1);
-			return ()
+		write(1, "-2147483648", 11);
 	}
-	else if (*s == 's')
-			return ;
-	else if (*s == 'p')
-    		return ;
-    else if (*s == 'd')
-            return ;
-    else if (*s == 'i')
-            return ;
-    else if (*s == 'u')
-            return ;
-    else if (*s == 'x')
-            return ;
-    else if (*s == 'X')
-            return ;
-    else if (*s == '%')
-            return ;
+	if (nb < 0 && nb > -2147483648)
+	{
+		print('-');
+		nb *= -1;
+	}
+	if (nb > 9)
+	{
+		ft_putnbr(nb / 10);
+		ft_putnbr(nb % 10);
+	}
+	else if (nb < 10 && nb >= 0)
+	{
+		print(nb + '0');
+	}
 }
 
-int	percentes(const char *s)
+void	str(char *s)
 {
 	int	i;
-	int	perc;
-
-	perc = 0;
+	
 	i = 0;
-	while (s[i])
-			if (s[i] == '%' && s[i + 1])
-}
-
-int	ft_printf(const char *s, ...)
-{
-	int	i;
-
-	i = 0;		
-	va_list	my_list;
-	va_start (my_list, s);
 	while (s[i])
 	{
 		print(s[i]);
 		i++;
 	}
+}
+
+
+int	ft_printf(const char *s, ...)
+{
+	int	i;
+
+	i = 0;        
+	va_list	my_list;
+	va_start	(my_list, s);
+	while (*s != '\0')
+	{
+		if (*s == '%')
+			{
+				if (*++s == 'c')
+					print (va_arg (my_list, int));
+				 else if (s[i] == 's')
+				 	str (va_arg (my_list, char*));
+				// else if (s[i] == 'p')
+				// 	va_arg (my_list, char);
+				// else if (s[i] == 'd')
+				// 	va_arg (my_list, float);
+				// else if (s[i] == 'i')
+				// 	ft_putnbr (va_arg (my_list, int));
+				// else if (s[i] == 'u')
+				// 	va_arg (my_list, double);
+				// else if (s[i] == 'x')
+				// 	va_arg (my_list, char);
+				// else if (s[i] == 'X')
+				// 	va_arg (my_list, char);
+				// else if (s[i] == '%')
+				// 	va_arg (my_list, char);
+			}
+			else
+				print(*s);
+		s++;
+	}
 	va_end (my_list);
-}	
+	return i;
+}    
+
+
+int main(void)
+{
+	char *i = "HI";
+	ft_printf("printf %s\n", i);
+	printf("this is the printf %s\n", i);
+	return 0;
+}
+
+
+
+/*
+•OK		 %c Prints a single character.
+•OK		 %s Prints a string (as defined by the common C convention).
+•		 %p The void * pointer argument has to be printed in hexadecimal format.
+•		 %d Prints a decimal (base 10) number.
+•OK		 %i Prints an integer in base 10.
+•		 %u Prints an unsigned decimal (base 10) number.
+•		 %x Prints a number in hexadecimal (base 16) lowercase format.
+•		 %X Prints a number in hexadecimal (base 16) uppercase format.
+•		 %% Prints a percent sign.
+*/
