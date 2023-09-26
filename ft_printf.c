@@ -6,7 +6,7 @@
 /*   By: ecaliska <ecaliska@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 16:10:44 by ecaliska          #+#    #+#             */
-/*   Updated: 2023/09/26 17:18:13 by ecaliska         ###   ########.fr       */
+/*   Updated: 2023/09/26 17:54:31 by ecaliska         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,19 @@ void	ft_putnbr(int nb)
 	}
 }
 
+void	ft_unsigned_putnbr(unsigned int nb)
+{
+	if (nb > 9)
+	{
+		ft_unsigned_putnbr(nb / 10);
+		ft_unsigned_putnbr(nb % 10);
+	}
+	else if (nb < 10)
+	{
+		print(nb + '0');
+	}
+}
+
 void	str(char *s)
 {
 	int	i;
@@ -69,21 +82,21 @@ int	ft_printf(const char *s, ...)
 			{
 				if (*++s == 'c')
 					print (va_arg (my_list, int));
-				 else if (s[i] == 's')
+				 else if (*s == 's')
 				 	str (va_arg (my_list, char*));
 				// else if (s[i] == 'p')
 				// 	va_arg (my_list, char);
-				// else if (s[i] == 'd')
-				// 	va_arg (my_list, float);
+				 else if (s[i] == 'd')
+				 	ft_putnbr (va_arg (my_list, int));
 				// else if (s[i] == 'i')
 				// 	ft_putnbr (va_arg (my_list, int));
-				// else if (s[i] == 'u')
-				// 	va_arg (my_list, double);
+				 else if (s[i] == 'u')
+				 	ft_unsigned_putnbr (va_arg (my_list, unsigned int));
 				// else if (s[i] == 'x')
 				// 	va_arg (my_list, char);
 				// else if (s[i] == 'X')
 				// 	va_arg (my_list, char);
-				else if (s[i] == '%')
+				else if (*s == '%')
 					write (1, "%", 1);
 			}
 			else
@@ -97,9 +110,9 @@ int	ft_printf(const char *s, ...)
 
 int main(void)
 {
-	char *i = "HI";
-	ft_printf("printf %s\n", i);
-	printf("this is the printf %s\n", i);
+	unsigned int i = -1515;
+	ft_printf("printf %u\n", i);
+	printf("this is the printf %u\n", i);
 	return 0;
 }
 
@@ -109,10 +122,10 @@ int main(void)
 •OK		 %c Prints a single character.
 •OK		 %s Prints a string (as defined by the common C convention).
 •		 %p The void * pointer argument has to be printed in hexadecimal format.
-•		 %d Prints a decimal (base 10) number.
+•OK		 %d Prints a decimal (base 10) number.
 •OK		 %i Prints an integer in base 10.
-•		 %u Prints an unsigned decimal (base 10) number.
+•OK		 %u Prints an unsigned decimal (base 10) number.
 •		 %x Prints a number in hexadecimal (base 16) lowercase format.
 •		 %X Prints a number in hexadecimal (base 16) uppercase format.
-•		 %% Prints a percent sign.
+•OK		 %% Prints a percent sign.
 */
