@@ -6,12 +6,13 @@
 /*   By: ecaliska <ecaliska@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 16:10:44 by ecaliska          #+#    #+#             */
-/*   Updated: 2023/09/27 16:53:14 by ecaliska         ###   ########.fr       */
+/*   Updated: 2023/09/27 18:02:14 by ecaliska         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <unistd.h>
 #include <stdarg.h>
+#include <stdlib.h>
 #include <stdio.h>
 
 void	print(char c)
@@ -66,10 +67,47 @@ void	str(char *s)
 	}
 }
 
-// void	adress(void *ad)
-// {
-// 	print(&ad);
-// }
+int	len(int nb)
+{
+	int	i;
+
+	i = 0;
+	while (nb)
+	{
+		nb /= 10;
+		i++;
+	}
+	return (i);
+}
+
+char	*hexadecimal(int nb, int x)
+{
+	char	*s;
+	int		q;
+	int		length;
+	int		rem;
+	char	*str;
+
+	s = "0123456789ABCDEF";
+	if (x == 'x')
+		s = "0123456789abcdef";
+	length = len(nb);
+	str = (char *)malloc(sizeof(char) * length + 1);
+	str[length] = '\0';
+	while (nb != 0)
+	{
+		q = nb / 16;
+		rem = nb % 16;
+		str[--length] = s[rem];
+		nb = q;
+	}
+	while (str[length])
+	{
+		print(str[length]);
+		length++;
+	}
+	return (str);
+}
 
 int	ft_printf(const char *s, ...)
 {
@@ -96,10 +134,10 @@ int	ft_printf(const char *s, ...)
 				ft_putnbr(va_arg(my_list, int));
 			else if (*s == 'u')
 				ft_unsigned_putnbr(va_arg(my_list, unsigned int));
-			// else if (s[i] == 'x')
-			// 	va_arg (my_list, char);
-			// else if (s[i] == 'X')
-			// 	va_arg (my_list, char);
+			else if (*s == 'x')
+			 	hexadecimal(va_arg (my_list, int), 'x');
+			else if (*s == 'X')
+			 	hexadecimal(va_arg (my_list, int), 'X');
 			else if (*s == '%')
 				write (1, "%", 1);
 		}
@@ -114,9 +152,9 @@ int	ft_printf(const char *s, ...)
 
 int main(void)
 {
-	unsigned int i = -1515;
-	ft_printf("printf %u\n", i);
-	printf("this is the printf %u\n", i);
+	int i = 11111101;
+	ft_printf("printf %X\n", i);
+	printf("this is the printf %X\n", i);
 	return 0;
 }
 
@@ -127,7 +165,7 @@ int main(void)
 •OK		 %d Prints a decimal (base 10) number.
 •OK		 %i Prints an integer in base 10.
 •OK		 %u Prints an unsigned decimal (base 10) number.
-•		 %x Prints a number in hexadecimal (base 16) lowercase format.
-•		 %X Prints a number in hexadecimal (base 16) uppercase format.
+•OK		 %x Prints a number in hexadecimal (base 16) lowercase format.
+•OK		 %X Prints a number in hexadecimal (base 16) uppercase format.
 •OK		 %% Prints a percent sign.
 */
