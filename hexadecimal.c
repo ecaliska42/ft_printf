@@ -6,34 +6,55 @@
 /*   By: ecaliska <ecaliska@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/26 19:27:35 by ecaliska          #+#    #+#             */
-/*   Updated: 2023/09/26 20:26:58 by ecaliska         ###   ########.fr       */
+/*   Updated: 2023/09/27 16:57:50 by ecaliska         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdio.h>
 #include <unistd.h>
+#include <stdlib.h>
+#include <string.h>
 
-char	hexadecimal(int nb)
+int	len(int nb)
 {
-	char *s = "0123456789ABCDEF";
-	float	number = nb;
-	int length;
-	while (number > 0)
+	int	i;
+
+	i = 0;
+	while (nb)
 	{
-		number /= 10;
-		length++;
+		nb /= 10;
+		i++;
 	}
-	number = nb;
-	while (length--)
+	return (i);
+}
+
+char	*hexadecimal(int nb)
+{
+	char	*s;
+	int		q;
+	int		length;
+	int		rem;
+	char	*str;
+
+	s = "0123456789ABCDEF";
+	length = len(nb);
+	str = (char *)malloc(sizeof(char) * length + 1);
+	str[length] = '\0';
+	while (nb)
 	{
-		number /= 16;
-		16 * 
+		q = nb / 16;
+		rem = nb % 16;
+		str[--length] = s[rem];
+		nb = q;
 	}
+	return (str);
 }
 
 int	main(void)
 {
-	int	nb = 44252;
-	printf("%d",hexadecimal (nb));
+	int	nb;
+
+	nb = 450;
+	printf("%s", hexadecimal (nb));
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: ecaliska <ecaliska@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 16:10:44 by ecaliska          #+#    #+#             */
-/*   Updated: 2023/09/26 19:09:35 by ecaliska         ###   ########.fr       */
+/*   Updated: 2023/09/27 16:53:14 by ecaliska         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,8 @@ int	ft_printf(const char *s, ...)
 
 	i = 0;
 	va_start (my_list, s);
+	if (!s)
+		return (-1);
 	while (*s != '\0')
 	{
 		if (*s == '%')
@@ -88,11 +90,11 @@ int	ft_printf(const char *s, ...)
 				str(va_arg(my_list, char*));
 			// else if (s[i] == 'p')
 			// 	va_arg (my_list, void *);
-			else if (s[i] == 'd')
+			else if (*s == 'd')
 				ft_putnbr(va_arg(my_list, int));
-			else if (s[i] == 'i')
+			else if (*s == 'i')
 				ft_putnbr(va_arg(my_list, int));
-			else if (s[i] == 'u')
+			else if (*s == 'u')
 				ft_unsigned_putnbr(va_arg(my_list, unsigned int));
 			// else if (s[i] == 'x')
 			// 	va_arg (my_list, char);
