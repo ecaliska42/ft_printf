@@ -6,7 +6,7 @@
 /*   By: ecaliska <ecaliska@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 16:10:44 by ecaliska          #+#    #+#             */
-/*   Updated: 2023/09/28 17:19:05 by ecaliska         ###   ########.fr       */
+/*   Updated: 2023/09/28 18:10:52 by ecaliska         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,24 +27,19 @@ int	ft_putnbr(int nb)
 
 	i = 0;
 	if (nb == -2147483648)
-	{
 		return (write(1, "-2147483648", 11));
-	}
 	if (nb < 0 && nb > -2147483648)
 	{
-		print('-');
+		i += print('-');
 		nb *= -1;
 	}
 	if (nb > 9)
 	{
-		ft_putnbr(nb / 10);
-		ft_putnbr(nb % 10);
+		i += ft_putnbr(nb / 10);
+		i += ft_putnbr(nb % 10);
 	}
 	else if (nb < 10 && nb >= 0)
-	{
-		print(nb + '0');
-		i++;
-	}
+		i += print(nb + '0');
 	return (i);
 }
 
@@ -55,14 +50,11 @@ int	ft_unsigned_putnbr(unsigned int nb)
 	i = 0;
 	if (nb > 9)
 	{
-		ft_unsigned_putnbr(nb / 10);
-		ft_unsigned_putnbr(nb % 10);
+		i += ft_unsigned_putnbr(nb / 10);
+		i += ft_unsigned_putnbr(nb % 10);
 	}
 	else if (nb < 10)
-	{
-		print(nb + '0');
-		i++;
-	}
+		i += print(nb + '0');
 	return (i);
 }
 
@@ -196,29 +188,29 @@ int	ft_printf(const char *s, ...)
 	va_end (my_list);
 	return (length);
 }
-
+/*
 #include <limits.h>
 
 int	main(void)
 {
 	//void	*p;
-	int		i;
+	unsigned int	i;
 	//void *nb = LONG_MAX;
-	i = -214748368;
+	i = UINT_MAX;
 	//ft_printf("printf\t\t\t%p\n", i);
-	printf("num:%d\n", ft_printf("%i hi", i));
+	printf("num:%d\n", ft_printf("%u hi", i));
 	//printf("this is the printf\t%p\n", i);
-	printf("orignum:%d", printf("%i hi", i));
+	printf("orignum:%d", printf("%u hi", i));
 	return (0);
 }
-
+*/
 /*
 •OKOK	 %c Prints a single character.
 •OKOK	 %s Prints a string (as defined by the common C convention).
 •OKOK	 %p The void * pointer argument has to be printed in hexadecimal format.
-•OK		 %d Prints a decimal (base 10) number.
-•OK		 %i Prints an integer in base 10.
-•OK		 %u Prints an unsigned decimal (base 10) number.
+•OKOK	 %d Prints a decimal (base 10) number.
+•OKOK	 %i Prints an integer in base 10.
+•OKOK	 %u Prints an unsigned decimal (base 10) number.
 •OKOK	 %x Prints a number in hexadecimal (base 16) lowercase format.
 •OKOK	 %X Prints a number in hexadecimal (base 16) uppercase format.
 •OKOK	 %% Prints a percent sign.
