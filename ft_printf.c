@@ -6,7 +6,7 @@
 /*   By: ecaliska <ecaliska@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 16:10:44 by ecaliska          #+#    #+#             */
-/*   Updated: 2023/09/28 18:43:33 by ecaliska         ###   ########.fr       */
+/*   Updated: 2023/09/28 19:47:48 by ecaliska         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ int	ft_printf(const char *s, ...)
 	int		i;
 	int		length;
 	va_list	my_list;
+	char	*test;
 
 	i = 0;
 	length = 0;
@@ -30,7 +31,12 @@ int	ft_printf(const char *s, ...)
 			if (s[++i] == 'c')
 				length += print(va_arg(my_list, int));
 			else if (s[i] == 's')
-				length += str(va_arg(my_list, char *));
+			{
+				test = va_arg(my_list, char *);
+				if (test == NULL)
+					length += str("(null)");
+				length += str(test);
+			}
 			else if (s[i] == 'p')
 				length += adress(va_arg(my_list, void *));
 			else if (s[i] == 'd')
