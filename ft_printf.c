@@ -6,7 +6,7 @@
 /*   By: ecaliska <ecaliska@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 16:10:44 by ecaliska          #+#    #+#             */
-/*   Updated: 2023/09/28 15:16:34 by ecaliska         ###   ########.fr       */
+/*   Updated: 2023/09/28 15:26:58 by ecaliska         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,6 @@ int	len(int nb)
 char	*adress(void *point)
 {
 	char				*s;
-	long long			q;
 	long long			length;
 	long long			rem;
 	char				*str;
@@ -92,17 +91,16 @@ char	*adress(void *point)
 	p = (unsigned long long) point;
 	write (1, "0x", 2);
 	s = "0123456789abcdef";
-	length = len(p) + 5;
+	length = len(p) + 1;
 	str = (char *)malloc(sizeof(char) * length + 1);
 	if (!str)
 		return (NULL);
 	str[length] = '\0';
 	while (p != 0)
 	{
-		q = p / 16;
 		rem = p % 16;
+		p /= 16;
 		str[--length] = s[rem];
-		p = q;
 	}
 	while (str[length])
 	{
@@ -115,7 +113,6 @@ char	*adress(void *point)
 char	*hexadecimal(int nb, int x)
 {
 	char	*s;
-	int		q;
 	int		length;
 	int		rem;
 	char	*str;
@@ -130,10 +127,9 @@ char	*hexadecimal(int nb, int x)
 	str[length] = '\0';
 	while (nb != 0)
 	{
-		q = nb / 16;
 		rem = nb % 16;
+		nb /= 16;
 		str[--length] = s[rem];
-		nb = q;
 	}
 	while (str[length])
 	{
@@ -148,7 +144,7 @@ int	ft_printf(const char *s, ...)
 	int		i;
 	va_list	my_list;
 
-	i = 0;q
+	i = 0;
 	va_start (my_list, s);
 	if (!s)
 		return (-1);
@@ -185,12 +181,12 @@ int	ft_printf(const char *s, ...)
 
 int	main(void)
 {
-	//void	*p;
-	int		i;
+	void	*p;
+	//int		i;
 
-	i = 1044715932;
-	ft_printf("printf\t\t\t%x\n", i);
-	printf("this is the printf\t%x\n", i);
+	//i = 1044715932;
+	ft_printf("printf\t\t\t%p\n", &p);
+	printf("this is the printf\t%p\n", &p);
 	return (0);
 }
 
