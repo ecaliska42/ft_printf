@@ -6,7 +6,7 @@
 /*   By: ecaliska <ecaliska@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 16:10:44 by ecaliska          #+#    #+#             */
-/*   Updated: 2023/09/28 15:26:58 by ecaliska         ###   ########.fr       */
+/*   Updated: 2023/09/28 17:19:05 by ecaliska         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,16 +15,20 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-void	print(char c)
+int	print(char c)
 {
 	write(1, &c, 1);
+	return (1);
 }
 
-void	ft_putnbr(int nb)
+int	ft_putnbr(int nb)
 {
+	int	i;
+
+	i = 0;
 	if (nb == -2147483648)
 	{
-		write(1, "-2147483648", 11);
+		return (write(1, "-2147483648", 11));
 	}
 	if (nb < 0 && nb > -2147483648)
 	{
@@ -39,11 +43,16 @@ void	ft_putnbr(int nb)
 	else if (nb < 10 && nb >= 0)
 	{
 		print(nb + '0');
+		i++;
 	}
+	return (i);
 }
 
-void	ft_unsigned_putnbr(unsigned int nb)
+int	ft_unsigned_putnbr(unsigned int nb)
 {
+	int	i;
+
+	i = 0;
 	if (nb > 9)
 	{
 		ft_unsigned_putnbr(nb / 10);
@@ -52,10 +61,12 @@ void	ft_unsigned_putnbr(unsigned int nb)
 	else if (nb < 10)
 	{
 		print(nb + '0');
+		i++;
 	}
+	return (i);
 }
 
-void	str(char *s)
+int	str(char *s)
 {
 	int	i;
 
@@ -65,36 +76,39 @@ void	str(char *s)
 		print(s[i]);
 		i++;
 	}
+	return (i);
 }
 
-int	len(int nb)
+int	len(unsigned long long nb)
 {
 	int	i;
 
 	i = 0;
 	while (nb)
 	{
-		nb /= 10;
+		nb /= 16;
 		i++;
 	}
 	return (i);
 }
 
-char	*adress(void *point)
+int	adress(void *point)
 {
 	char				*s;
-	long long			length;
+	int					length;
 	long long			rem;
 	char				*str;
 	unsigned long long	p;
 
+	if (point == NULL)
+		return(write(1, "(nill)", 5));
 	p = (unsigned long long) point;
 	write (1, "0x", 2);
 	s = "0123456789abcdef";
 	length = len(p) + 1;
 	str = (char *)malloc(sizeof(char) * length + 1);
 	if (!str)
-		return (NULL);
+		return (0);
 	str[length] = '\0';
 	while (p != 0)
 	{
@@ -107,10 +121,10 @@ char	*adress(void *point)
 		print(str[length]);
 		length++;
 	}
-	return (str);
+	return (length + 1);
 }
 
-char	*hexadecimal(int nb, int x)
+int	hexadecimal(int nb, int x)
 {
 	char	*s;
 	int		length;
@@ -123,7 +137,7 @@ char	*hexadecimal(int nb, int x)
 	length = len(nb);
 	str = (char *)malloc(sizeof(char) * length + 1);
 	if (!str)
-		return (NULL);
+		return (0);
 	str[length] = '\0';
 	while (nb != 0)
 	{
@@ -136,68 +150,76 @@ char	*hexadecimal(int nb, int x)
 		print(str[length]);
 		length++;
 	}
-	return (str);
+	return (length);
 }
 
 int	ft_printf(const char *s, ...)
 {
 	int		i;
+	int		length;
 	va_list	my_list;
 
 	i = 0;
+	length = 0;
 	va_start (my_list, s);
 	if (!s)
 		return (-1);
-	while (*s != '\0')
+	while (s[i] != '\0')
 	{
-		if (*s == '%')
+		if (s[i] == '%')
 		{
-			if (*++s == 'c')
-				print(va_arg(my_list, int));
-			else if (*s == 's')
-				str(va_arg(my_list, char*));
-			else if (*s == 'p')
-				adress(va_arg(my_list, void*));
-			else if (*s == 'd')
-				ft_putnbr(va_arg(my_list, int));
-			else if (*s == 'i')
-				ft_putnbr(va_arg(my_list, int));
-			else if (*s == 'u')
-				ft_unsigned_putnbr(va_arg(my_list, unsigned int));
-			else if (*s == 'x')
-				hexadecimal(va_arg(my_list, int), 'x');
-			else if (*s == 'X')
-				hexadecimal(va_arg(my_list, int), 'X');
-			else if (*s == '%')
-				write (1, "%", 1);
+			if (s[++i] == 'c')
+				length += print(va_arg(my_list, int));
+			else if (s[i] == 's')
+				length += str(va_arg(my_list, char*));
+			else if (s[i] == 'p')
+				length += adress(va_arg(my_list, void*));
+			else if (s[i] == 'd')
+				length += ft_putnbr(va_arg(my_list, int));
+			else if (s[i] == 'i')
+				length += ft_putnbr(va_arg(my_list, int));
+			else if (s[i] == 'u')
+				length += ft_unsigned_putnbr(va_arg(my_list, unsigned int));
+			else if (s[i] == 'x')
+				length += hexadecimal(va_arg(my_list, int), 'x');
+			else if (s[i] == 'X')
+				length += hexadecimal(va_arg(my_list, int), 'X');
+			else if (s[i] == '%')
+				length += print('%');
+			else
+				return (-1);
 		}
 		else
-			print(*s);
-		s++;
+			length += print(s[i]);
+		i++;
 	}
 	va_end (my_list);
-	return (i);
+	return (length);
 }
+
+#include <limits.h>
 
 int	main(void)
 {
-	void	*p;
-	//int		i;
-
-	//i = 1044715932;
-	ft_printf("printf\t\t\t%p\n", &p);
-	printf("this is the printf\t%p\n", &p);
+	//void	*p;
+	int		i;
+	//void *nb = LONG_MAX;
+	i = -214748368;
+	//ft_printf("printf\t\t\t%p\n", i);
+	printf("num:%d\n", ft_printf("%i hi", i));
+	//printf("this is the printf\t%p\n", i);
+	printf("orignum:%d", printf("%i hi", i));
 	return (0);
 }
 
 /*
-•OK		 %c Prints a single character.
-•OK		 %s Prints a string (as defined by the common C convention).
-•		 %p The void * pointer argument has to be printed in hexadecimal format.
+•OKOK	 %c Prints a single character.
+•OKOK	 %s Prints a string (as defined by the common C convention).
+•OKOK	 %p The void * pointer argument has to be printed in hexadecimal format.
 •OK		 %d Prints a decimal (base 10) number.
 •OK		 %i Prints an integer in base 10.
 •OK		 %u Prints an unsigned decimal (base 10) number.
-•OK		 %x Prints a number in hexadecimal (base 16) lowercase format.
-•OK		 %X Prints a number in hexadecimal (base 16) uppercase format.
-•OK		 %% Prints a percent sign.
+•OKOK	 %x Prints a number in hexadecimal (base 16) lowercase format.
+•OKOK	 %X Prints a number in hexadecimal (base 16) uppercase format.
+•OKOK	 %% Prints a percent sign.
 */
