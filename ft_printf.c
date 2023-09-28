@@ -6,7 +6,7 @@
 /*   By: ecaliska <ecaliska@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 16:10:44 by ecaliska          #+#    #+#             */
-/*   Updated: 2023/09/27 21:23:36 by ecaliska         ###   ########.fr       */
+/*   Updated: 2023/09/28 15:16:34 by ecaliska         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,17 +82,20 @@ int	len(int nb)
 
 char	*adress(void *point)
 {
-	char	*s;
-	long long	q;
-	long long	length;
-	long long	rem;
-	char	*str;
-	unsigned long long p = (unsigned long long) point;
+	char				*s;
+	long long			q;
+	long long			length;
+	long long			rem;
+	char				*str;
+	unsigned long long	p;
 
+	p = (unsigned long long) point;
 	write (1, "0x", 2);
 	s = "0123456789abcdef";
 	length = len(p) + 5;
 	str = (char *)malloc(sizeof(char) * length + 1);
+	if (!str)
+		return (NULL);
 	str[length] = '\0';
 	while (p != 0)
 	{
@@ -109,8 +112,7 @@ char	*adress(void *point)
 	return (str);
 }
 
-
-char	*hexadecimal(unsigned long long nb, int x)
+char	*hexadecimal(int nb, int x)
 {
 	char	*s;
 	int		q;
@@ -123,6 +125,8 @@ char	*hexadecimal(unsigned long long nb, int x)
 		s = "0123456789abcdef";
 	length = len(nb);
 	str = (char *)malloc(sizeof(char) * length + 1);
+	if (!str)
+		return (NULL);
 	str[length] = '\0';
 	while (nb != 0)
 	{
@@ -144,7 +148,7 @@ int	ft_printf(const char *s, ...)
 	int		i;
 	va_list	my_list;
 
-	i = 0;
+	i = 0;q
 	va_start (my_list, s);
 	if (!s)
 		return (-1);
@@ -157,7 +161,7 @@ int	ft_printf(const char *s, ...)
 			else if (*s == 's')
 				str(va_arg(my_list, char*));
 			else if (*s == 'p')
-				adress(va_arg (my_list, void *));
+				adress(va_arg(my_list, void*));
 			else if (*s == 'd')
 				ft_putnbr(va_arg(my_list, int));
 			else if (*s == 'i')
@@ -165,9 +169,9 @@ int	ft_printf(const char *s, ...)
 			else if (*s == 'u')
 				ft_unsigned_putnbr(va_arg(my_list, unsigned int));
 			else if (*s == 'x')
-			 	hexadecimal(va_arg (my_list, int), 'x');
+				hexadecimal(va_arg(my_list, int), 'x');
 			else if (*s == 'X')
-			 	hexadecimal(va_arg (my_list, int), 'X');
+				hexadecimal(va_arg(my_list, int), 'X');
 			else if (*s == '%')
 				write (1, "%", 1);
 		}
@@ -179,14 +183,15 @@ int	ft_printf(const char *s, ...)
 	return (i);
 }
 
-
-int main(void)
+int	main(void)
 {
-	//int i = 1044715932;
-	void *p;
-	ft_printf("printf\t\t\t%p\n", &p);
-	printf("this is the printf\t%p\n", &p);
-	return 0;
+	//void	*p;
+	int		i;
+
+	i = 1044715932;
+	ft_printf("printf\t\t\t%x\n", i);
+	printf("this is the printf\t%x\n", i);
+	return (0);
 }
 
 /*
