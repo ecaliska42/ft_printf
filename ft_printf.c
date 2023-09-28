@@ -6,7 +6,7 @@
 /*   By: ecaliska <ecaliska@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 16:10:44 by ecaliska          #+#    #+#             */
-/*   Updated: 2023/09/28 18:10:52 by ecaliska         ###   ########.fr       */
+/*   Updated: 2023/09/28 18:14:55 by ecaliska         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ int	adress(void *point)
 	unsigned long long	p;
 
 	if (point == NULL)
-		return(write(1, "(nill)", 5));
+		return (write(1, "(nill)", 5));
 	p = (unsigned long long) point;
 	write (1, "0x", 2);
 	s = "0123456789abcdef";
@@ -163,9 +163,9 @@ int	ft_printf(const char *s, ...)
 			if (s[++i] == 'c')
 				length += print(va_arg(my_list, int));
 			else if (s[i] == 's')
-				length += str(va_arg(my_list, char*));
+				length += str(va_arg(my_list, char *));
 			else if (s[i] == 'p')
-				length += adress(va_arg(my_list, void*));
+				length += adress(va_arg(my_list, void *));
 			else if (s[i] == 'd')
 				length += ft_putnbr(va_arg(my_list, int));
 			else if (s[i] == 'i')
